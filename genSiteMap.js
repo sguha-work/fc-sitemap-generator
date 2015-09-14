@@ -42,7 +42,7 @@ function urlUnit(url) {
   return "<url><loc>" + url + "</loc><lastmod>"+ today + "</lastmod><changefreq>daily</changefreq><priority>" + priority.toString() +"</priority></url>";
 }
 rl.on('line', function(line) {
-    fs.appendFile("gensitemaps/sitemap-dev-full.xml", urlUnit(line), function(err) {
+    fs.appendFile("gensitemaps/sitemap.xml", urlUnit(line), function(err) {
         if (err) {
             return console.log(err);
         }

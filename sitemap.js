@@ -10,26 +10,29 @@
     and one with dev center. You can do so by editing line number 62, for dev center the condition should be !==-1 and 
     for without dev center it should be ===-1.
 */
-var request = require("request");
-var cheerio = require('cheerio');
-var domainName = 'http://www.fusioncharts.com';
-var urlList = ['http://www.fusioncharts.com/'];
-var listIndex = 0;
+var request = require("request"),
+    cheerio = require('cheerio'),
+    fs = require('fs'),
+    domainName = 'http://www.fusioncharts.com',
+    urlList = ['http://www.fusioncharts.com/'],
+    listIndex = 0;
 
 function requestUrl(url) {
     process.nextTick(function() {
         if (url && url !== 'undefined' && url !== '') {
             console.log(url);
-            request({
-                uri: url,
-                method: "GET",
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36',
-                },
-                timeout: 15000,
-                followRedirect: true,
-                maxRedirects: 10
-            }, processFile);
+            fs.appendFile('fc_url_list.txt', url+"\n", function (err) {
+                request({
+                    uri: url,
+                    method: "GET",
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36',
+                    },
+                    timeout: 15000,
+                    followRedirect: true,
+                    maxRedirects: 10
+                }, processFile);
+            });
         }
     });
 }

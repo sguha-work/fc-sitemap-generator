@@ -7,7 +7,8 @@
     This will create a sitemap.xml file and place it in gensitemaps folder
     This file hangs sometimes. Needed to be fixed.
     As a temporary work around, you can run this program twice one without dev center 
-    and one with dev center. You can do so by editing line number 62.
+    and one with dev center. You can do so by editing line number 62, for dev center the condition should be !==-1 and 
+    for without dev center it should be ===-1.
 */
 var request = require("request");
 var cheerio = require('cheerio');

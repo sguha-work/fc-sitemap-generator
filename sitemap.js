@@ -16,7 +16,7 @@ var request = require("request"),
     domainName = 'http://www.fusioncharts.com',
     urlList = ['http://www.fusioncharts.com/'],
     listIndex = 0;
-
+fs.writeFile("fc_url_list.txt", "");
 function requestUrl(url) {
     process.nextTick(function() {
         if (url && url !== 'undefined' && url !== '') {
@@ -63,13 +63,14 @@ function processFile(error, response, responseBody) {
                 if (nextLink.indexOf('.xml') !== -1 || nextLink.indexOf('.json') !== -1 || nextLink.indexOf('/javascript:') !== -1) {
                     flag = false;
                 }
-                if (flag && urlList.indexOf(nextLink) === -1 && nextLink.indexOf('/dev/') !== -1) {
+                if (flag && urlList.indexOf(nextLink) === -1 && nextLink.indexOf('/dev/') === -1) {//&& nextLink.indexOf('/dev/') !== -1
                     urlList.push(nextLink);
                 }
             }
         });
         listIndex++;
-        callNext();
+        setTimeout(callNext,1000);
+        
     }
 }
 

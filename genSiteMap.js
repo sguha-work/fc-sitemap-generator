@@ -1,6 +1,6 @@
 var readline = require('readline');
 var fs = require('fs');
-fs.writeFile("gensitemaps/sitemap.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+fs.writeFile("gensitemaps/sitemap.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><urlset xmlns=\"http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9\">");
 var rl = readline.createInterface({
     input: fs.createReadStream('fc_url_list.txt'),
     output: process.stdout,
@@ -40,7 +40,7 @@ function urlUnit(url) {
       break;
     }
   }
-  return "<url><loc>" + url + "</loc><lastmod>"+ today + "</lastmod><changefreq>daily</changefreq><priority>" + priority.toString() +"</priority></url>";
+  return "<url><loc>" + url.split("&").join("&amp;") + "</loc><lastmod>"+ today + "</lastmod><changefreq>daily</changefreq><priority>" + priority.toString() +"</priority></url>";
 }
 rl.on('line', function(line) {
 

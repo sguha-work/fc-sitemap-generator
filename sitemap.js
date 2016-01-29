@@ -13,7 +13,7 @@
 var request = require("request"),
     cheerio = require('cheerio'),
     fs = require('fs'),
-    domainName = 'http://www.fusioncharts.com',
+    domainName = 'http://www.fusioncharts.com/',
     urlList = ['http://www.fusioncharts.com/'],
     listIndex = 0;
 fs.writeFile("fc_url_list.txt", "");
@@ -60,16 +60,16 @@ function processFile(error, response, responseBody) {
                     nextLink = domainName + '/' + nextLink;
                     flag = true;
                 }
-                if (nextLink.indexOf('.xml') !== -1 || nextLink.indexOf('.json') !== -1 || nextLink.indexOf('/javascript:') !== -1) {
+                if (nextLink.indexOf('.xml') !== -1 || nextLink.indexOf('.json') !== -1 || nextLink.indexOf('/javascript:') !== -1|| nextLink.indexOf('.zip') !== -1) {
                     flag = false;
                 }
-                if (flag && urlList.indexOf(nextLink) === -1 && nextLink.indexOf('/dev/') === -1) {//&& nextLink.indexOf('/dev/') !== -1
+                if (flag && urlList.indexOf(nextLink) === -1 && nextLink.indexOf('/dev/') === -1&&nextLink.indexOf("blog.fusioncharts") ===-1) {//&& nextLink.indexOf('/dev/') !== -1
                     urlList.push(nextLink);
                 }
             }
         });
         listIndex++;
-        setTimeout(callNext,1000);
+        setTimeout(callNext,2000);
         
     }
 }

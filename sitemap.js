@@ -14,7 +14,7 @@ var request = require("request"),
     cheerio = require('cheerio'),
     fs = require('fs'),
     domainName = 'http://www.fusioncharts.com/',
-    urlList = ['http://www.fusioncharts.com/'],
+    urlList = [domainName],
     listIndex = 0;
 fs.writeFile("fc_url_list.txt", "");
 function requestUrl(url) {
@@ -40,7 +40,7 @@ function requestUrl(url) {
 function processFile(error, response, responseBody) {
     var $;
     //console.log("content type is ", response.headers['content-type']);
-    if (responseBody) {
+    if (responseBody && response.statusCode != 404) {
         $ = cheerio.load(responseBody);
         $('body').find('a').each(function() {
             var nextLink = $(this).attr('href'),
@@ -49,6 +49,11 @@ function processFile(error, response, responseBody) {
                 nextLink = nextLink.split('#')[0];
                 nextLink = nextLink.split('?PageSpeed=noscript')[0];
                 nextLink = nextLink.split('&PageSpeed=noscript')[0];
+                nextLink = nextLink.split("?replytocom=")[0];
+                nextLink = nextLink.split("&replytocom=")[0];
+                nextLink = nextLink.split("//").join("/");
+                nextLink = nextLink.split("http:/").join("http://");
+
                 if (nextLink.indexOf('http') === 0 || nextLink.indexOf('www') === 0) {
                     if (nextLink.indexOf(domainName) > -1 && urlList.indexOf(nextLink) === -1) {
                         flag = true;
@@ -63,7 +68,7 @@ function processFile(error, response, responseBody) {
                 if (nextLink.indexOf('.xml') !== -1 || nextLink.indexOf('.json') !== -1 || nextLink.indexOf('/javascript:') !== -1|| nextLink.indexOf('.zip') !== -1) {
                     flag = false;
                 }
-                if (flag && urlList.indexOf(nextLink) === -1 && nextLink.indexOf('/dev/') === -1&&nextLink.indexOf("blog.fusioncharts") ===-1) {//&& nextLink.indexOf('/dev/') !== -1
+                if (flag && urlList.indexOf(nextLink) === -1 &&nextLink.indexOf("blog.fusioncharts") ===-1) {//&& nextLink.indexOf('/dev/') !== -1
                     urlList.push(nextLink);
                 }
             }
@@ -71,10 +76,13 @@ function processFile(error, response, responseBody) {
         listIndex++;
         setTimeout(callNext,2000);
         
+    } else {
+        listIndex++;
+        setTimeout(callNext,2000);
     }
 }
 
 function callNext() {
     requestUrl(urlList[listIndex]);
 }
-requestUrl('http://www.fusioncharts.com/');
+requestUrl(domainName);

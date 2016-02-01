@@ -31,6 +31,9 @@ var priorityRules = [{
 }, {
   pattern: "/buy/",
   priority: "0.6"
+},{
+  pattern: "/blog/",
+  priority: "0.7"
 }];
 function urlUnit(url) {
   var priority = 0.9;
@@ -40,7 +43,7 @@ function urlUnit(url) {
       break;
     }
   }
-  return "<url><loc>" + url.split("&").join("&amp;") + "</loc><lastmod>"+ today + "</lastmod><changefreq>daily</changefreq><priority>" + priority.toString() +"</priority></url>";
+  return "<url><loc>" + url.split("&").join("&amp;").split(".com//").join(".com/") + "</loc><lastmod>"+ today + "</lastmod><changefreq>daily</changefreq><priority>" + priority.toString() +"</priority></url>";
 }
 rl.on('line', function(line) {
 
